@@ -157,14 +157,14 @@ security background; currently a Principal AI/Cloud/Security Architect. Two deca
 worked, and it led to an AWS acquihire. GPU HA is the analogous question for the AI era: can the same
 discipline route inference traffic around dying GPUs? This repo is the honest answer.
 
-- Connect on LinkedIn: [your LinkedIn URL]
-- Writing: the *Paracoding* series (link when live)
+- Connect on LinkedIn: https://www.linkedin.com/in/gpuha
+- Writing: the *Paracoding* series - Book 1 is live: https://a.co/d/0bdZMM8O
 
 ### Support the author
 
 If this saved you time or taught you something, you can support the work by shopping at my other venture —
 gourmet and functional mushrooms, grown at **[Seaside Mushrooms](https://shop.seasidemushrooms.com)**. And
-keep an eye out for the *Paracoding* books, which tell the story of how projects like this one get built.
+keep an eye out for the *Paracoding* books (https://a.co/d/0bdZMM8O), which tell the story of how projects like this one get built.
 
 ---
 

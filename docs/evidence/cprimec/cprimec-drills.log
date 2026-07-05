@@ -1,0 +1,95 @@
+=== C-prime-c UP Sat Jul  4 04:46:11 AM UTC 2026 ===
+[gpuha] started file-server on :8090 (/root/gpuha-workbench/gpuha)
+[gpuha] run 20260704-044612-b34cd8 | topology demo-full | min_pools 1
+[gpuha] acquiring pool gpuha-target-lambda via lambda ...
+[FIREWALL GATE] scope plane inbound udp/5106 <- 129.153.189.225/32 (Scott)
+[gpuha] acquiring pool gpuha-target-gcp-stub via gcp_stub ...
+[FIREWALL GATE] scope plane inbound udp/5106 <- 35.252.99.94/32 (Scott)
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['(1', '+cmd', '+short', '-p', '127.0.0.1#5353:', '5353', '9.18.39-0ubuntu0.24.04.5-Ubuntu', ';', ';;', '<<>>', '@127.0.0.1', 'DiG', 'api.gpuha.com', 'be', 'communications', 'connection', 'could', 'error', 'found)', 'global', 'no', 'options:', 'reached', 'refused', 'server', 'servers', 'to']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['35.252.99.94']
+[gpuha] GPU pool live in DNS: {'gpuha-target-lambda': '129.153.189.225', 'gpuha-target-gcp-stub': '35.252.99.94'}
+[gpuha] --- real streamed completion through the pool router ---
+HTTP=200
+X-GPUHA-Served-By: gpuha-w1
+X-GPUHA-Attempt: 0
+---BODY---
+{"id":"chatcmpl-17666901086146429aafa5f59581c31b","object":"chat.completion","created":1783140956,"model":"gpuha","choices":[{"index":0,"message":{"role":"assistant","content":"GPU HA online","refusal":null,"annotations":null,"audio":null,"function_call":null,"tool_calls":[],"reasoning_content":null},"logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":36,"total_tokens":40,"completion_tokens":4,"prompt
+[gpuha] real-completion proof: OK
+[gpuha] UP: 2 pool(s) live: {'gpuha-target-lambda': '129.153.189.225', 'gpuha-target-gcp-stub': '35.252.99.94'}
+run-id: 20260704-044612-b34cd8 | status: up
+
+########## DRILL 1 BASELINE Sat Jul  4 05:00:26 AM UTC 2026 ##########
+dig (expect BOTH pools 129.153.189.225 + 35.252.99.94):
+35.252.99.94
+129.153.189.225
+tier1 ANSWER SET (tail):
+Jul 04 04:53:16 localhost python3[14467]: 04:53:16 tier1: ANSWER SET -> ['35.252.99.94']  pools=['gpuha-target-gcp-stub']  dropped_frames={}
+Jul 04 04:55:45 localhost python3[14467]: 04:55:45 tier1: ANSWER SET -> ['35.252.99.94', '129.153.189.225']  pools=['gpuha-target-gcp-stub', 'gpuha-target-lambda']  dropped_frames={}
+
+########## DRILL 2 CROSS-CLOUD EVACUATE: kill GCP pool Sat Jul  4 05:01:15 AM UTC 2026 ##########
+Deleted [https://www.googleapis.com/compute/v1/projects/gpuha-dev/zones/us-west1-b/instances/gpuha-gcp-stub-b34cd8-0].
+sleep 14 for tier1 freshness eviction...
+dig after GCP pool killed (expect LAMBDA-ONLY 129.153.189.225):
+129.153.189.225
+tier1 ANSWER SET (tail):
+Jul 04 04:55:45 localhost python3[14467]: 04:55:45 tier1: ANSWER SET -> ['35.252.99.94', '129.153.189.225']  pools=['gpuha-target-gcp-stub', 'gpuha-target-lambda']  dropped_frames={}
+Jul 04 05:01:28 localhost python3[14467]: 05:01:28 tier1: ANSWER SET -> ['129.153.189.225']  pools=['gpuha-target-lambda']  dropped_frames={}
+dropped_frames (tail):
+Jul 04 05:01:24 localhost python3[14467]: 05:01:24 tier1: dropped_frames (per-node UDP loss)={}
+Jul 04 05:01:54 localhost python3[14467]: 05:01:54 tier1: dropped_frames (per-node UDP loss)={}
+-- real completion STILL flows via Lambda after cross-cloud evacuate --
+HTTP=200
+X-GPUHA-Served-By: gpuha-w1
+X-GPUHA-Attempt: 0
+---BODY---
+{"id":"chatcmpl-c42ba37e42474d7892a64185b1fbdfd0","object":"chat.completion","created":1783141388,"model":"gpuha","choices":[{"index":0,"message":{"role":"assistant","content":"GPU High Availability Online","refusal":null,"annotations":null,"audio":null,"function_call":null,"tool_calls":[],"reasoning_content":null},"logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":36,"total_tokens":41,"completion_to
+
+########## DRILL 3 WHALE FINALE: kill Lambda shim Sat Jul  4 05:03:08 AM UTC 2026 ##########
+sleep 14 -> both dark -> FAILSAFE...
+dig (expect WHALE 203.0.113.10):
+203.0.113.10
+tier1 FAILSAFE (tail):
+Jul 04 04:55:45 localhost python3[14467]: 04:55:45 tier1: ANSWER SET -> ['35.252.99.94', '129.153.189.225']  pools=['gpuha-target-gcp-stub', 'gpuha-target-lambda']  dropped_frames={}
+Jul 04 05:01:28 localhost python3[14467]: 05:01:28 tier1: ANSWER SET -> ['129.153.189.225']  pools=['gpuha-target-lambda']  dropped_frames={}
+Jul 04 05:03:18 localhost python3[14467]: 05:03:18 tier1: ANSWER SET -> ['203.0.113.10']  pools=['gpuha-target-plane', 'gpuha-target-gcp-stub', 'gpuha-target-lambda']  [FAILSAFE->WHALE 203.0.113.10]  dropped_frames={}
+curl the whale (graceful degraded):
+{"id":"chatcmpl-gpuha-degraded","object":"chat.completion","created":1783127147,"model":"gpuha-degraded","choices":[{"index":0,"message":{"role":"assistant","content":"I'm having trouble reaching compute resources right now. Please give me a moment and try again shortly."},"finish_reason":"stop"}],"usage":{"prompt_tokens":0,"completion_tokens":0,"total_tokens":0}}
+whale HTTP:
+200
+
+########## TEARDOWN Sat Jul  4 05:04:58 AM UTC 2026 ##########
+[gpuha] torn down lambda/9f937394864045a59f706b15fe8b37a0
+ERROR: (gcloud.compute.instances.delete) Could not fetch resource:
+ - The resource 'projects/gpuha-dev/zones/us-west1-b/instances/gpuha-gcp-stub-b34cd8-0' was not found
+
+[gpuha] teardown error gpuha-gcp-stub-b34cd8-0: 'NoneType' object has no attribute 'strip' (reap will catch it)
+[gpuha] DOWN: run 20260704-044612-b34cd8 torn down; pools unwired
+[gpuha] reaped lambda: ['gpuha-managed--20260704-044612-b34cd8--0']
+reaped: {'lambda': ['gpuha-managed--20260704-044612-b34cd8--0']}
+
+########## FINAL VERIFICATION Sat Jul  4 05:07:28 AM UTC 2026 ##########
+-- Lambda instances (MUST be NONE) --
+NONE
+-- Lambda filesystems (MUST be NONE) --
+NONE
+-- GCP gpuha-managed (MUST be none) --
+(gcp: blank above = none)
+-- deadman watchdog still armed? --
+  14240       23:45 bash -c sleep 5400 && bash /root/gpuha-workbench/gpuha/deadman.sh
+  14241       23:45 sleep 5400

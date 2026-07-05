@@ -1,0 +1,87 @@
+<svg viewBox="0 0 1200 940" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="1200" height="940" fill="#fbfbfa"/>
+  <text x="600" y="38" text-anchor="middle" font-size="24" font-weight="700" fill="#1a1a1a">Control-Plane HA — Split-Brain Resolution (design zoom)</text>
+  <text x="600" y="64" text-anchor="middle" font-size="14" fill="#6b6b6b">Why a heartbeat alone is not enough, and how a third-region witness / lease makes exactly one plane authoritative.</text>
+
+  <!-- THE PROBLEM -->
+  <rect x="40" y="90" width="1120" height="330" rx="12" fill="#f7ecec" stroke="#e0b3b3"/>
+  <text x="60" y="118" font-size="16" font-weight="700" fill="#8a2b2b">THE PROBLEM — heartbeat-only dual planes</text>
+
+  <!-- west -->
+  <rect x="120" y="150" width="260" height="120" rx="10" fill="#fff" stroke="#9cc7ab"/>
+  <text x="250" y="178" text-anchor="middle" font-size="14" font-weight="700" fill="#245a3a">WEST plane (Fremont)</text>
+  <text x="250" y="202" text-anchor="middle" font-size="12" fill="#4a4a4a">tier1 DNS · thinks it's ACTIVE</text>
+  <rect x="150" y="216" width="200" height="38" rx="6" fill="#fbe4e4" stroke="#e0a3a3"/>
+  <text x="250" y="240" text-anchor="middle" font-size="12" font-weight="700" fill="#8a2b2b">claims SOA / master</text>
+
+  <!-- east -->
+  <rect x="820" y="150" width="260" height="120" rx="10" fill="#fff" stroke="#9cc7ab"/>
+  <text x="950" y="178" text-anchor="middle" font-size="14" font-weight="700" fill="#245a3a">EAST plane (Newark)</text>
+  <text x="950" y="202" text-anchor="middle" font-size="12" fill="#4a4a4a">can't see West · assumes it died</text>
+  <rect x="850" y="216" width="200" height="38" rx="6" fill="#fbe4e4" stroke="#e0a3a3"/>
+  <text x="950" y="240" text-anchor="middle" font-size="12" font-weight="700" fill="#8a2b2b">ALSO claims SOA / master</text>
+
+  <!-- broken heartbeat -->
+  <line x1="380" y1="210" x2="820" y2="210" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 6"/>
+  <text x="600" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#c0392b">heartbeat link DROPS</text>
+  <text x="600" y="230" text-anchor="middle" font-size="20" fill="#c0392b">✕</text>
+
+  <!-- consequence -->
+  <rect x="120" y="292" width="960" height="106" rx="10" fill="#fff" stroke="#e0b3b3"/>
+  <text x="600" y="318" text-anchor="middle" font-size="13.5" font-weight="700" fill="#8a2b2b">Both planes alive, neither can see the other → both answer DNS for api.gpuha.com → clients get conflicting answers.</text>
+  <text x="600" y="344" text-anchor="middle" font-size="12.5" fill="#6b2222">The HA layer becomes the outage. Worse than a single plane, because now the authority itself is inconsistent.</text>
+  <text x="600" y="372" text-anchor="middle" font-size="12.5" font-style="italic" fill="#6b6b6b">A heartbeat detects "I can't reach my peer" — but "can't reach" is ambiguous: peer dead? or just the link between us dead? It cannot tell.</text>
+
+  <!-- THE RESOLUTION -->
+  <rect x="40" y="440" width="1120" height="380" rx="12" fill="#e9f2ec" stroke="#b3d4bf"/>
+  <text x="60" y="468" font-size="16" font-weight="700" fill="#245a3a">THE RESOLUTION — a third vantage breaks the tie (witness / lease)</text>
+
+  <!-- west -->
+  <rect x="100" y="510" width="240" height="150" rx="10" fill="#fff" stroke="#9cc7ab"/>
+  <text x="220" y="538" text-anchor="middle" font-size="14" font-weight="700" fill="#245a3a">WEST plane</text>
+  <text x="220" y="560" text-anchor="middle" font-size="11.5" fill="#4a4a4a">must HOLD the lease to</text>
+  <text x="220" y="576" text-anchor="middle" font-size="11.5" fill="#4a4a4a">act as master</text>
+  <rect x="128" y="590" width="184" height="56" rx="6" fill="#eef7f1" stroke="#b3d4bf"/>
+  <text x="220" y="612" text-anchor="middle" font-size="12" font-weight="700" fill="#245a3a">holds lease → ACTIVE</text>
+  <text x="220" y="632" text-anchor="middle" font-size="11" fill="#4a4a4a">serves DNS authoritatively</text>
+
+  <!-- east -->
+  <rect x="860" y="510" width="240" height="150" rx="10" fill="#fff" stroke="#9cc7ab"/>
+  <text x="980" y="538" text-anchor="middle" font-size="14" font-weight="700" fill="#245a3a">EAST plane</text>
+  <text x="980" y="560" text-anchor="middle" font-size="11.5" fill="#4a4a4a">tries to grab lease,</text>
+  <text x="980" y="576" text-anchor="middle" font-size="11.5" fill="#4a4a4a">fails (West holds it)</text>
+  <rect x="888" y="590" width="184" height="56" rx="6" fill="#f4f8f5" stroke="#cfe0d5"/>
+  <text x="980" y="612" text-anchor="middle" font-size="12" font-weight="700" fill="#7a8a7f">no lease → STANDBY</text>
+  <text x="980" y="632" text-anchor="middle" font-size="11" fill="#4a4a4a">stays hot spare, does NOT serve</text>
+
+  <!-- witness -->
+  <rect x="470" y="500" width="260" height="120" rx="10" fill="#fff5e9" stroke="#e0c48a"/>
+  <text x="600" y="528" text-anchor="middle" font-size="14" font-weight="700" fill="#8a5a1a">WITNESS — 3rd region</text>
+  <text x="600" y="551" text-anchor="middle" font-size="11.5" fill="#4a4a4a">holds the lease / lock.</text>
+  <text x="600" y="568" text-anchor="middle" font-size="11.5" fill="#4a4a4a">Grants "master" to exactly</text>
+  <text x="600" y="585" text-anchor="middle" font-size="11.5" fill="#4a4a4a">ONE plane at a time.</text>
+  <text x="600" y="607" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6b6b6b">tiny, cheap, independent of both planes</text>
+
+  <!-- lease arrows -->
+  <line x1="470" y1="575" x2="340" y2="600" stroke="#8a5a1a" stroke-width="2.5" marker-end="url(#s1)"/>
+  <text x="400" y="575" text-anchor="middle" font-size="11" font-weight="600" fill="#8a5a1a">grants</text>
+  <line x1="860" y1="600" x2="730" y2="575" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#s2)"/>
+  <text x="800" y="575" text-anchor="middle" font-size="11" font-weight="600" fill="#c0392b">denies</text>
+
+  <!-- outcome + tradeoffs -->
+  <rect x="100" y="686" width="1000" height="118" rx="10" fill="#eef7f1" stroke="#b3d4bf"/>
+  <text x="600" y="712" text-anchor="middle" font-size="14" font-weight="700" fill="#245a3a">OUTCOME — exactly one plane is authoritative at any instant. Partition can't produce two masters.</text>
+  <text x="120" y="740" font-size="12.5" fill="#3a4a65">• If WEST dies for real: its lease expires → EAST acquires it → EAST promotes to master. Clean failover, no overlap.</text>
+  <text x="120" y="762" font-size="12.5" fill="#3a4a65">• If only the WEST↔EAST link dies but both live: the witness still favors one (West keeps its lease) → the other stays standby. No split-brain.</text>
+  <text x="120" y="784" font-size="12.5" fill="#3a4a65">• Don't hand-roll consensus — lean on a proven lease/lock primitive. This is the classic HA-of-the-HA problem; the witness is the standard shape.</text>
+
+  <!-- note -->
+  <rect x="40" y="838" width="1120" height="70" rx="10" fill="#eef2f8" stroke="#c3d0e4"/>
+  <text x="600" y="866" text-anchor="middle" font-size="13" font-weight="700" fill="#2b3a55">Reminder from the parent sketch: dual planes protect against a plane DYING — they do NOT speed up client failover (public-resolver TTL floors still apply).</text>
+  <text x="600" y="890" text-anchor="middle" font-size="12" fill="#5a6b85">Fast client failover stays the L7 tier's job; the whale covers the all-dark case. This diagram solves "who is authoritative," not "how fast do clients re-resolve."</text>
+
+  <defs>
+    <marker id="s1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#8a5a1a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="s2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#c0392b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+</svg>

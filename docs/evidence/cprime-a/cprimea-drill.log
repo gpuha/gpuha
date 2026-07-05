@@ -1,0 +1,70 @@
+=== C'-a UP Sat Jul  4 12:09:31 PM UTC 2026 ===
+[gpuha] started file-server on :8090 (/root/gpuha-workbench/gpuha)
+[gpuha] run 20260704-120932-4ceae3 | topology demo-cprime-a | min_pools 1
+[gpuha] acquiring pool gpuha-target-lambda via lambda ...
+[FIREWALL GATE] scope plane inbound udp/5106 <- 132.145.139.184/32 (Scott)
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['(1', '+cmd', '+short', '-p', '127.0.0.1#5353:', '5353', '9.18.39-0ubuntu0.24.04.5-Ubuntu', ';', ';;', '<<>>', '@127.0.0.1', 'DiG', 'api.gpuha.com', 'be', 'communications', 'connection', 'could', 'error', 'found)', 'global', 'no', 'options:', 'reached', 'refused', 'server', 'servers', 'to']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+[gpuha] waiting for GPU pool to warm (vLLM cold start)... dig=['203.0.113.10']
+===== C-prime-a INTRA-POOL FAILOVER DRILL Sat Jul  4 12:45:47 UTC 2026 =====
+-- BEFORE: router /__stats (expect eligible w1+w2) --
+{"stats": {"requests": 0, "failovers": 0, "midstream_failfast": 0, "no_capacity": 0, "ok": 0}, "eligible": ["gpuha-w1", "gpuha-w2"]}
+-- 3 completions BEFORE kill (X-GPUHA-Served-By) --
+X-GPUHA-Served-By: gpuha-w2
+X-GPUHA-Served-By: gpuha-w2
+X-GPUHA-Served-By: gpuha-w1
+-- KILL worker gpuha-w1 (vllm :8000) --
+w1 vllm killed 12:45:48
+-- AFTER kill: router /__stats (expect eligible w2 ONLY) --
+{"stats": {"requests": 3, "failovers": 0, "midstream_failfast": 0, "no_capacity": 0, "ok": 3}, "eligible": ["gpuha-w2"]}
+-- 4 completions AFTER kill (expect ALL gpuha-w2, real tokens, HTTP 200, no error) --
+req 1: HTTP=200 | X-GPUHA-Served-By: gpuha-w2 | tokens="GPU HA online"
+req 2: HTTP=200 | X-GPUHA-Served-By: gpuha-w2 | tokens="GPU HA online"
+req 3: HTTP=200 | X-GPUHA-Served-By: gpuha-w2 | tokens="GPU High Availability online"
+req 4: HTTP=200 | X-GPUHA-Served-By: gpuha-w2 | tokens="GPU HA online"
+===== DRILL DONE Sat Jul  4 12:45:58 UTC 2026 =====

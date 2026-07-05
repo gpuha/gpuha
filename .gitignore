@@ -1,0 +1,5 @@
+.env
+gpuha-runs/
+__pycache__/
+*.pyc
+

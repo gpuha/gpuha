@@ -1,0 +1,13 @@
+[Unit]
+Description=GPU HA Tier-1 telemetry-driven DNS (with fail-whale FAILSAFE)
+After=network.target gpuha-whale.service
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/gpuha-workbench/gpuha
+# static plane pool + --failsafe-ip to the whale; dynamic orchestrated pools via --pool-file
+ExecStart=/usr/bin/python3 tier1_dns.py --dns-port 5353 --telem-port 5106 --fresh 10 --failsafe-ip 203.0.113.10 --pool gpuha-target-plane=203.0.113.10 --pool-file /root/gpuha-runs/tier1-pools.map
+Restart=always
+RestartSec=3
+[Install]
+WantedBy=multi-user.target

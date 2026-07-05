@@ -1,0 +1,98 @@
+<svg viewBox="0 0 1400 820" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="1400" height="820" fill="#fbfbfa"/>
+  <text x="700" y="40" text-anchor="middle" font-size="24" font-weight="700" fill="#1a1a1a">GPU HA — Client Traffic Test Harness (Phase H)</text>
+  <text x="700" y="66" text-anchor="middle" font-size="14" fill="#6b6b6b">Measures the CLIENT side of failover during drills — the half the server-side tables can't see. Prototype of the DR-evidence report.</text>
+
+  <!-- col headers -->
+  <rect x="30" y="92" width="400" height="640" rx="12" fill="#eef2f8" stroke="#c3d0e4"/>
+  <text x="230" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#2b3a55">CLIENT SIMULATION FLEET</text>
+  <text x="230" y="140" text-anchor="middle" font-size="11.5" fill="#5a6b85">continuous chat traffic</text>
+
+  <rect x="460" y="92" width="470" height="640" rx="12" fill="#f4f1ec" stroke="#d8cfc0"/>
+  <text x="695" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#5a4a2b">SYSTEM UNDER TEST</text>
+  <text x="695" y="140" text-anchor="middle" font-size="11.5" fill="#6b6b6b">the two-tier HA system (compact)</text>
+
+  <rect x="960" y="92" width="410" height="640" rx="12" fill="#e9f2ec" stroke="#b3d4bf"/>
+  <text x="1165" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#245a3a">MEASUREMENTS</text>
+  <text x="1165" y="140" text-anchor="middle" font-size="11.5" fill="#4a4a4a">collected DURING induced failures</text>
+
+  <!-- client fleet -->
+  <g>
+    <rect x="70" y="175" width="320" height="120" rx="10" fill="#fff" stroke="#c3d0e4"/>
+    <rect x="60" y="165" width="320" height="120" rx="10" fill="#fff" stroke="#c3d0e4"/>
+    <rect x="50" y="155" width="320" height="120" rx="10" fill="#fff" stroke="#c3d0e4"/>
+    <text x="210" y="182" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2b3a55">GCP e2-micro instances (cheap, agent-spun)</text>
+    <rect x="66" y="196" width="288" height="30" rx="5" fill="#eef2f8" stroke="#c3d0e4"/>
+    <text x="210" y="216" text-anchor="middle" font-size="12" fill="#2b3a55">client simulator</text>
+    <rect x="66" y="232" width="288" height="34" rx="5" fill="#eef7f1" stroke="#b3d4bf"/>
+    <text x="210" y="253" text-anchor="middle" font-size="12" font-weight="600" fill="#245a3a">REAL OpenAI Python SDK</text>
+  </g>
+  <rect x="60" y="300" width="150" height="70" rx="8" fill="#fff" stroke="#c3d0e4"/>
+  <text x="135" y="326" text-anchor="middle" font-size="12" font-weight="600" fill="#2b3a55">connection pooling</text>
+  <text x="135" y="348" text-anchor="middle" font-size="10.5" fill="#6b6b6b">(deliberately real)</text>
+  <rect x="222" y="300" width="150" height="70" rx="8" fill="#fff" stroke="#c3d0e4"/>
+  <text x="297" y="322" text-anchor="middle" font-size="12" font-weight="600" fill="#2b3a55">automatic retries</text>
+  <text x="297" y="343" text-anchor="middle" font-size="10.5" fill="#6b6b6b">(measure real client</text>
+  <text x="297" y="357" text-anchor="middle" font-size="10.5" fill="#6b6b6b">behavior, not ideal)</text>
+  <text x="210" y="410" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b6b6b">Real SDK on purpose: pooling + retries are</text>
+  <text x="210" y="426" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b6b6b">exactly what we're measuring. (Data-plane</text>
+  <text x="210" y="442" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b6b6b">stays stdlib; the harness is a test instrument.)</text>
+
+  <!-- SUT compact -->
+  <text x="695" y="180" text-anchor="middle" font-size="13" font-weight="600" fill="#5a4a2b">→ all traffic to api.gpuha.com →</text>
+  <rect x="490" y="200" width="120" height="80" rx="8" fill="#e9f2ec" stroke="#b3d4bf"/>
+  <text x="550" y="236" text-anchor="middle" font-size="12.5" font-weight="700" fill="#245a3a">DNS tier</text>
+  <text x="550" y="256" text-anchor="middle" font-size="10.5" fill="#4a4a4a">coarse</text>
+  <line x1="610" y1="240" x2="648" y2="240" stroke="#5a6b85" stroke-width="1.8" marker-end="url(#h1)"/>
+  <rect x="650" y="200" width="130" height="80" rx="8" fill="#e9f2ec" stroke="#b3d4bf"/>
+  <text x="715" y="236" text-anchor="middle" font-size="12.5" font-weight="700" fill="#245a3a">L7 routers</text>
+  <text x="715" y="256" text-anchor="middle" font-size="10.5" fill="#4a4a4a">per pool</text>
+  <text x="695" y="320" text-anchor="middle" font-size="12" font-weight="600" fill="#5a4a2b">GPU pools (real, multi-cloud)</text>
+  <rect x="500" y="335" width="120" height="46" rx="7" fill="#fff" stroke="#d8cfc0"/><text x="560" y="363" text-anchor="middle" font-size="12" fill="#333">Lambda pool</text>
+  <rect x="635" y="335" width="120" height="46" rx="7" fill="#fff" stroke="#d8cfc0"/><text x="695" y="363" text-anchor="middle" font-size="12" fill="#333">RunPod pool</text>
+  <rect x="770" y="335" width="120" height="46" rx="7" fill="#fff" stroke="#d8cfc0"/><text x="830" y="363" text-anchor="middle" font-size="12" fill="#333">GCP pool</text>
+  <text x="695" y="420" text-anchor="middle" font-size="11.5" fill="#6b6b6b">drills induce failures here while the fleet keeps sending traffic</text>
+
+  <!-- collector -->
+  <rect x="490" y="470" width="400" height="46" rx="8" fill="#fdf0e6" stroke="#e0b98a"/>
+  <text x="690" y="498" text-anchor="middle" font-size="12.5" font-weight="700" fill="#8a5a1a">Harness collector — aggregates per-client outcomes across the drill</text>
+
+  <!-- measurements -->
+  <rect x="985" y="165" width="360" height="118" rx="8" fill="#fff" stroke="#b3d4bf"/>
+  <text x="1000" y="190" font-size="13" font-weight="700" fill="#245a3a">Cached-DNS window</text>
+  <text x="1000" y="212" font-size="11.5" fill="#4a4a4a">How long clients keep hitting a dead pool</text>
+  <text x="1000" y="229" font-size="11.5" fill="#4a4a4a">after DNS already moved (resolver TTL floors</text>
+  <text x="1000" y="246" font-size="11.5" fill="#4a4a4a">20–60s). We cite lore — this MEASURES it.</text>
+  <text x="1000" y="270" font-size="11" font-style="italic" fill="#6b6b6b">→ turns a cited number into our own data</text>
+
+  <rect x="985" y="295" width="360" height="100" rx="8" fill="#fff" stroke="#b3d4bf"/>
+  <text x="1000" y="320" font-size="13" font-weight="700" fill="#245a3a">Connection-reuse lag</text>
+  <text x="1000" y="342" font-size="11.5" fill="#4a4a4a">Pooled SDK connections still hitting a dead</text>
+  <text x="1000" y="359" font-size="11.5" fill="#4a4a4a">router after DNS moved — the classic</text>
+  <text x="1000" y="376" font-size="11.5" fill="#4a4a4a">dnshat-era failure mode, finally observable.</text>
+
+  <rect x="985" y="407" width="360" height="100" rx="8" fill="#fff" stroke="#b3d4bf"/>
+  <text x="1000" y="432" font-size="13" font-weight="700" fill="#245a3a">SDK self-heal</text>
+  <text x="1000" y="454" font-size="11.5" fill="#4a4a4a">Does the OpenAI SDK's built-in retry/backoff</text>
+  <text x="1000" y="471" font-size="11.5" fill="#4a4a4a">cleanly recover when it hits the whale's</text>
+  <text x="1000" y="488" font-size="11.5" fill="#4a4a4a">503+Retry-After — or do naive apps thrash?</text>
+
+  <rect x="985" y="519" width="360" height="100" rx="8" fill="#fff" stroke="#b3d4bf"/>
+  <text x="1000" y="544" font-size="13" font-weight="700" fill="#245a3a">Anti-herding under concurrency</text>
+  <text x="1000" y="566" font-size="11.5" fill="#4a4a4a">Do many clients stampede the single best</text>
+  <text x="1000" y="583" font-size="11.5" fill="#4a4a4a">worker during a spike/failure? That code path</text>
+  <text x="1000" y="600" font-size="11.5" fill="#4a4a4a">has never seen a real concurrent stampede.</text>
+
+  <!-- flow arrows between columns -->
+  <line x1="374" y1="248" x2="486" y2="240" stroke="#5a6b85" stroke-width="2.2" marker-end="url(#h1)"/>
+  <line x1="890" y1="493" x2="980" y2="440" stroke="#8a5a1a" stroke-width="2.2" marker-end="url(#h2)"/>
+
+  <!-- footer -->
+  <rect x="30" y="748" width="1340" height="56" rx="10" fill="#eef2f8" stroke="#c3d0e4"/>
+  <text x="700" y="782" text-anchor="middle" font-size="14" font-weight="600" fill="#2b3a55">This harness is the prototype of an auditor-ready DR-evidence report: N simulated clients, error count through evacuation, truncations only on post-token kills, measured cached-window in seconds.</text>
+
+  <defs>
+    <marker id="h1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5a6b85" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="h2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#8a5a1a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+</svg>

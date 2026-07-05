@@ -1,0 +1,12 @@
+=== DEADMAN FIRED Sat Jul  4 05:08:30 AM UTC 2026 ===
+[05:08:31] attempt 1 lambda gpuha ids: []
+lambda clean
+WARNING: The following filter keys were not present in any resource : labels.gpuha-managed
+FINAL lambda instances: []
+=== DEADMAN DONE Sat Jul  4 05:08:33 AM UTC 2026 ===
+=== DEADMAN FIRED Sat Jul  4 06:13:45 AM UTC 2026 ===
+[06:13:46] attempt 1 lambda gpuha ids: []
+lambda clean
+WARNING: The following filter keys were not present in any resource : labels.gpuha-managed
+FINAL lambda instances: []
+=== DEADMAN DONE Sat Jul  4 06:13:48 AM UTC 2026 ===

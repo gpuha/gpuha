@@ -1,0 +1,11 @@
+$TTL 0
+@   IN  SOA ns1.gpuha.com. admin.gpuha.com. (
+        1783113969 ; Serial
+        300        ; Refresh
+        60         ; Retry
+        1209600    ; Expire
+        0          ; Negative Cache TTL
+)
+@   IN  NS  ns1.gpuha.com.
+ns1 IN  A   127.0.0.1
+@   IN  A   45.56.119.145

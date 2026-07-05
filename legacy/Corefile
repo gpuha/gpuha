@@ -1,0 +1,7 @@
+api.gpuha.com:53 {
+    gpuha
+    file /root/coredns/api.gpuha.com.zone
+    transfer {
+        to 104.237.137.10 45.79.109.10 74.207.225.10 143.42.7.10 109.74.194.10
+    }
+}

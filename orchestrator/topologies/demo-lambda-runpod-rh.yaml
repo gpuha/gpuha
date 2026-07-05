@@ -1,0 +1,34 @@
+# RP-P3: combined multi-cloud C'-c matrix (cost-lever version).
+# RunPod pool = router-head (host-level intra-pool failover, proven in RP-P2).
+# Lambda pool = SINGLE-worker survivor: its job in P3 is the cross-cloud
+# evacuation leg (does tier1 evacuate a dead pool to the other cloud), which a
+# single-worker survivor proves as rigorously as an RH pool. Saves one A10 +
+# the concurrent-cold-boot risk. min_pools:1 tolerates a partial fabric; the
+# full matrix gates on BOTH pools live in the run-sheet.
+name: demo-lambda-runpod-rh
+min_pools: 1
+plane:
+  host: 203.0.113.10
+  tier1_telem_port: 5106
+  tier1_dns_port: 5353
+  pool_map_file: /root/gpuha-runs/tier1-pools.map
+  tier1_service: gpuha-tier1
+  http_port: 8090
+  verify_timeout: 1800
+pools:
+  - name: gpuha-target-lambda
+    provider: lambda
+    role: gpu
+    machine_type: gpu_1x_a10
+    workers: 1
+    warmup_budget: 1800
+    regions:
+      - us-east-1
+      - us-west-1
+  - name: gpuha-target-runpod-rh
+    provider: runpod
+    role: gpu
+    machine_type: NVIDIA_L4
+    workers: 2
+    warmup_budget: 1800
+    router_head: true

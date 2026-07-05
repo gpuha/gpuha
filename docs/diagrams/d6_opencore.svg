@@ -1,0 +1,85 @@
+<svg viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="1200" height="900" fill="#fbfbfa"/>
+  <text x="600" y="38" text-anchor="middle" font-size="24" font-weight="700" fill="#1a1a1a">GPU HA — Open-Core Boundary</text>
+  <text x="600" y="64" text-anchor="middle" font-size="14" fill="#6b6b6b">Line drawn at data-plane (open) vs. control-plane (closed) — NOT at Tier-1 vs Tier-2. Open what people run themselves; keep what people pay you to run.</text>
+
+  <!-- OPEN column -->
+  <rect x="40" y="90" width="540" height="640" rx="12" fill="#e9f2ec" stroke="#7ab98a"/>
+  <text x="310" y="122" text-anchor="middle" font-size="18" font-weight="700" fill="#1e5a34">OPEN — the data plane</text>
+  <text x="310" y="146" text-anchor="middle" font-size="12.5" fill="#4a4a4a">install-it-yourself L7 HA for your own vLLM fleet · resume-visible · builds credibility</text>
+
+  <g font-size="13">
+    <rect x="70" y="168" width="480" height="52" rx="8" fill="#fff" stroke="#9cc7ab"/>
+    <text x="86" y="190" font-weight="700" fill="#1e5a34">router.py</text>
+    <text x="86" y="209" font-size="11.5" fill="#6b6b6b">L7 reverse proxy, first-token latch, dual framing — the flagship artifact</text>
+    <rect x="70" y="228" width="480" height="46" rx="8" fill="#fff" stroke="#9cc7ab"/>
+    <text x="86" y="249" font-weight="700" fill="#1e5a34">selection.py</text>
+    <text x="86" y="267" font-size="11.5" fill="#6b6b6b">freshness gate, scoring, breaker, anti-herding</text>
+    <rect x="70" y="282" width="480" height="46" rx="8" fill="#fff" stroke="#9cc7ab"/>
+    <text x="86" y="303" font-weight="700" fill="#1e5a34">vllm_telemetry_shim.py</text>
+    <text x="86" y="321" font-size="11.5" fill="#6b6b6b">scrapes stock vLLM /metrics → frame</text>
+    <rect x="70" y="336" width="480" height="46" rx="8" fill="#fff" stroke="#9cc7ab"/>
+    <text x="86" y="357" font-weight="700" fill="#1e5a34">whale.py</text>
+    <text x="86" y="375" font-size="11.5" fill="#6b6b6b">graceful degradation — broad goodwill, great demo</text>
+    <rect x="70" y="390" width="480" height="46" rx="8" fill="#fff" stroke="#9cc7ab"/>
+    <text x="86" y="411" font-weight="700" fill="#1e5a34">TelemetryFrame v1 — schema only</text>
+    <text x="86" y="429" font-size="11.5" fill="#6b6b6b">the wire format so components interoperate</text>
+    <rect x="70" y="444" width="480" height="46" rx="8" fill="#fff" stroke="#9cc7ab"/>
+    <text x="86" y="465" font-weight="700" fill="#1e5a34">tests + drill harnesses</text>
+    <text x="86" y="483" font-size="11.5" fill="#6b6b6b">credibility: shipped with proofs</text>
+  </g>
+
+  <rect x="70" y="506" width="480" height="90" rx="8" fill="#eef7f1" stroke="#b3d4bf"/>
+  <text x="310" y="530" text-anchor="middle" font-size="13" font-weight="700" fill="#1e5a34">also OPEN as IDEAS (blog / talks / README)</text>
+  <text x="310" y="552" text-anchor="middle" font-size="11.5" fill="#4a4a4a">the two-tier thesis · first-token contract · drill methodology · architecture diagrams</text>
+  <text x="310" y="574" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b6b6b">concepts build reputation; withholding concepts protects nothing</text>
+
+  <rect x="70" y="608" width="480" height="100" rx="8" fill="#fff5e9" stroke="#e0c48a"/>
+  <text x="310" y="632" text-anchor="middle" font-size="13" font-weight="700" fill="#8a5a1a">HOLD — pending patent-attorney conversation</text>
+  <text x="310" y="654" text-anchor="middle" font-size="11.5" fill="#4a4a4a">tier1_dns.py + the shared TelemetryIngest (opening these together</text>
+  <text x="310" y="671" text-anchor="middle" font-size="11.5" fill="#4a4a4a">discloses the cross-tier mechanism) · legacy/ (own prior art)</text>
+  <text x="310" y="693" text-anchor="middle" font-size="11" font-style="italic" fill="#6b6b6b">publishing starts disclosure clocks — decide before releasing these</text>
+
+  <!-- CLOSED column -->
+  <rect x="620" y="90" width="540" height="640" rx="12" fill="#f7ecec" stroke="#d98a8a"/>
+  <text x="890" y="122" text-anchor="middle" font-size="18" font-weight="700" fill="#8a2b2b">CLOSED — the control plane</text>
+  <text x="890" y="146" text-anchor="middle" font-size="12.5" fill="#4a4a4a">what a customer pays you to operate · the moat · the encoded scar-tissue</text>
+
+  <g font-size="13">
+    <rect x="650" y="168" width="480" height="52" rx="8" fill="#fff" stroke="#d98a8a"/>
+    <text x="666" y="190" font-weight="700" fill="#8a2b2b">orchestrator (gpuha up/down/reap)</text>
+    <text x="666" y="209" font-size="11.5" fill="#6b6b6b">the product's core loop — acquire anywhere, tear to zero</text>
+    <rect x="650" y="228" width="480" height="52" rx="8" fill="#fff" stroke="#d98a8a"/>
+    <text x="666" y="250" font-weight="700" fill="#8a2b2b">provider adapters</text>
+    <text x="666" y="269" font-size="11.5" fill="#6b6b6b">Lambda/RunPod/GCP lifecycle + capacity scar-tissue = the moat</text>
+    <rect x="650" y="288" width="480" height="52" rx="8" fill="#fff" stroke="#d98a8a"/>
+    <text x="666" y="310" font-weight="700" fill="#8a2b2b">cross-cloud evacuation coordination</text>
+    <text x="666" y="329" font-size="11.5" fill="#6b6b6b">multi-pool control-plane logic — what ICP-2 buys</text>
+    <rect x="650" y="348" width="480" height="52" rx="8" fill="#fff" stroke="#d98a8a"/>
+    <text x="666" y="370" font-weight="700" fill="#8a2b2b">DR-evidence / compliance engine</text>
+    <text x="666" y="389" font-size="11.5" fill="#6b6b6b">scheduled drills + auditor-ready reports — the enterprise wedge</text>
+    <rect x="650" y="408" width="480" height="52" rx="8" fill="#fff" stroke="#d98a8a"/>
+    <text x="666" y="430" font-weight="700" fill="#8a2b2b">intent API + MCP server</text>
+    <text x="666" y="449" font-size="11.5" fill="#6b6b6b">rollout control for agentic CI/CD (control/evidence only)</text>
+    <rect x="650" y="468" width="480" height="52" rx="8" fill="#fff" stroke="#d98a8a"/>
+    <text x="666" y="490" font-weight="700" fill="#8a2b2b">business docs</text>
+    <text x="666" y="509" font-size="11.5" fill="#6b6b6b">MARKET_NOTES, TARGET_STATE, briefs — never public</text>
+  </g>
+
+  <rect x="650" y="536" width="480" height="172" rx="8" fill="#fbe4e4" stroke="#e0a3a3"/>
+  <text x="890" y="560" text-anchor="middle" font-size="13" font-weight="700" fill="#8a2b2b">the candidate-novel primitives (HOLD for attorney)</text>
+  <text x="890" y="584" text-anchor="middle" font-size="11.5" fill="#6b2222">• one content-free telemetry frame driving BOTH tiers,</text>
+  <text x="890" y="601" text-anchor="middle" font-size="11.5" fill="#6b2222">  liveness = consumer-side arrival freshness</text>
+  <text x="890" y="622" text-anchor="middle" font-size="11.5" fill="#6b2222">• first-token-aware (stream-safe) drains for releases</text>
+  <text x="890" y="643" text-anchor="middle" font-size="11.5" fill="#6b2222">• unified voluntary/involuntary traffic control</text>
+  <text x="890" y="668" text-anchor="middle" font-size="11" font-style="italic" fill="#6b6b6b">these sit in the SEAM between tiers — which is why the</text>
+  <text x="890" y="684" text-anchor="middle" font-size="11" font-style="italic" fill="#6b6b6b">open/closed line can't follow the tier boundary</text>
+
+  <!-- footer -->
+  <rect x="40" y="748" width="1120" height="130" rx="12" fill="#eef2f8" stroke="#c3d0e4"/>
+  <text x="600" y="776" text-anchor="middle" font-size="15" font-weight="700" fill="#2b3a55">Two repos, never a visibility toggle.</text>
+  <text x="600" y="802" text-anchor="middle" font-size="12.5" fill="#3a4a65">The private canonical repo (business docs, briefs, orchestrator, legacy) stays private FOREVER. Going public = curating a SEPARATE new repo</text>
+  <text x="600" y="822" text-anchor="middle" font-size="12.5" fill="#3a4a65">containing ONLY the open set + fresh docs. Public release is an act of curation, not flipping one repo's visibility.</text>
+  <text x="600" y="848" text-anchor="middle" font-size="12.5" fill="#3a4a65">License rec: Apache-2.0 for the open repo (enterprise-friendly, patent grant covers only the open code — which is why the novel seam is excluded).</text>
+  <text x="600" y="868" text-anchor="middle" font-size="11.5" font-style="italic" fill="#6b6b6b">per OPEN_CORE.md — the disposition table lives there</text>
+</svg>

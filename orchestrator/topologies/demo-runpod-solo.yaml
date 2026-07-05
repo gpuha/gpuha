@@ -1,0 +1,21 @@
+# RP-P1 solo: ONE RunPod L4 pod, worker-only + vLLM --api-key.
+# Purpose: cheap de-risk of the (possibly-drifted) adapter + the HARD GATE:
+#   B's publicIp:mappedPort must 401 a no-key request (else exposed GPU -> STOP).
+name: demo-runpod-solo
+min_pools: 1
+plane:
+  host: 203.0.113.10
+  tier1_telem_port: 5106
+  tier1_dns_port: 5353
+  pool_map_file: /root/gpuha-runs/tier1-pools.map
+  tier1_service: gpuha-tier1
+  http_port: 8090
+  verify_timeout: 1800
+pools:
+  - name: gpuha-target-runpod-solo
+    provider: runpod
+    role: gpu
+    machine_type: NVIDIA_L4
+    workers: 1
+    warmup_budget: 1800
+    worker_only: true

@@ -1,0 +1,29 @@
+# Phase C'-c: combined multi-cloud demo. Pool A = real Lambda A10 GPU (vLLM+router+shim);
+# Pool B = GCP e2-micro stub (cross-cloud tier1 pool). min_pools:1 => partial success
+# still yields a working fabric rather than a full abort.
+name: demo-full
+min_pools: 1
+plane:
+  host: 203.0.113.10
+  tier1_telem_port: 5106
+  tier1_dns_port: 5353
+  pool_map_file: /root/gpuha-runs/tier1-pools.map
+  tier1_service: gpuha-tier1
+  http_port: 8090
+  verify_timeout: 900
+pools:
+  - name: gpuha-target-lambda
+    provider: lambda
+    role: gpu
+    machine_type: gpu_1x_a10
+    workers: 1
+    regions:
+      - us-east-1
+      - us-west-1
+  - name: gpuha-target-gcp-stub
+    provider: gcp_stub
+    role: stub
+    region: us-west1
+    zone: us-west1-b
+    machine_type: e2-micro
+    workers: 1

@@ -1,0 +1,19 @@
+# Milestone 1 topology: ONE GCP e2-micro stub pool (no GPU, no inference).
+# Proves the acquire -> bootstrap -> wire -> verify -> teardown -> reap loop
+# for ~$0 before any GPU dollar is spent.
+name: demo-minimal
+min_pools: 1
+plane:
+  host: 203.0.113.10
+  tier1_telem_port: 5106
+  tier1_dns_port: 5353
+  pool_map_file: /root/gpuha-runs/tier1-pools.map
+  tier1_service: gpuha-tier1
+pools:
+  - name: gpuha-target-gcp-stub
+    provider: gcp_stub
+    role: stub
+    region: us-west1
+    zone: us-west1-b
+    machine_type: e2-micro
+    workers: 1

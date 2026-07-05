@@ -1,0 +1,25 @@
+# Phase C'-a: intra-pool real-GPU failover. ONE Lambda A10 running TWO real vLLM
+# workers (memory-split, ports 8000/8001) behind ONE router. Kill one worker mid-
+# stream -> router fails over to the OTHER real-GPU-backed worker (X-GPUHA-Served-By
+# flips). Removes the "failover target was a stub" asterisk. (Two vLLM co-resident on
+# one A10 for cost/reliability; two physical GPUs is the trivial extension.)
+name: demo-cprime-a
+min_pools: 1
+plane:
+  host: 203.0.113.10
+  tier1_telem_port: 5106
+  tier1_dns_port: 5353
+  pool_map_file: /root/gpuha-runs/tier1-pools.map
+  tier1_service: gpuha-tier1
+  http_port: 8090
+  verify_timeout: 1200
+pools:
+  - name: gpuha-target-lambda
+    provider: lambda
+    role: gpu
+    machine_type: gpu_1x_a10
+    workers: 1
+    gpu_workers: 2
+    regions:
+      - us-east-1
+      - us-west-1

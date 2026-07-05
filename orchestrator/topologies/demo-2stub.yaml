@@ -1,0 +1,25 @@
+name: demo-2stub
+min_pools: 2
+plane:
+  host: 203.0.113.10
+  tier1_telem_port: 5106
+  tier1_dns_port: 5353
+  pool_map_file: /root/gpuha-runs/tier1-pools.map
+  tier1_service: gpuha-tier1
+  http_port: 8090
+  verify_timeout: 600
+pools:
+  - name: gpuha-target-stuba
+    provider: gcp_stub
+    role: stub
+    region: us-west1
+    zone: us-west1-b
+    machine_type: e2-micro
+    workers: 1
+  - name: gpuha-target-stubb
+    provider: gcp_stub
+    role: stub
+    region: us-west1
+    zone: us-west1-c
+    machine_type: e2-micro
+    workers: 1

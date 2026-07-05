@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# gpuha - GPU HA orchestrator entry point. Run from the canonical repo root.
+#   ./gpuha up orchestrator/topologies/demo-minimal.yaml
+#   ./gpuha status | down [run-id] | reap [--all|run-id]
+set -euo pipefail
+cd "$(dirname "$0")"
+[ -f .env ] && set -a && . ./.env && set +a || true
+exec python3 -m orchestrator.cli "$@"

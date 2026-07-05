@@ -1,0 +1,117 @@
+<svg viewBox="0 0 1500 940" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="1500" height="940" fill="#fbfbfa"/>
+  <text x="750" y="38" text-anchor="middle" font-size="24" font-weight="700" fill="#1a1a1a">GPU HA — Live Failover Demo (the five drills)</text>
+  <text x="750" y="64" text-anchor="middle" font-size="14" fill="#6b6b6b">Every layer degrades gracefully; the client never sees a raw connection failure. Topology: Lambda (2 GPU) · RunPod (2 GPU) · GCP (1 GPU).</text>
+
+  <!-- column dividers -->
+  <line x1="300" y1="90" x2="300" y2="900" stroke="#e0e0e0"/>
+  <line x1="588" y1="90" x2="588" y2="900" stroke="#e0e0e0"/>
+  <line x1="876" y1="90" x2="876" y2="900" stroke="#e0e0e0"/>
+  <line x1="1164" y1="90" x2="1164" y2="900" stroke="#e0e0e0"/>
+
+  <!-- row labels -->
+  <text x="16" y="140" font-size="12" font-weight="700" fill="#888">SCENARIO</text>
+  <text x="16" y="440" font-size="12" font-weight="700" fill="#888">SYSTEM ACTION</text>
+  <text x="16" y="720" font-size="12" font-weight="700" fill="#888">CLIENT EXPERIENCE</text>
+
+  <!-- ===== DRILL 1 ===== -->
+  <rect x="20" y="100" width="270" height="70" rx="8" fill="#eef7f1" stroke="#b3d4bf"/>
+  <text x="155" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="#245a3a">1 · Baseline</text>
+  <text x="155" y="148" text-anchor="middle" font-size="11.5" fill="#4a4a4a">all 3 pools healthy;</text>
+  <text x="155" y="163" text-anchor="middle" font-size="11.5" fill="#4a4a4a">DNS returns all pool IPs</text>
+  <rect x="20" y="200" width="270" height="200" rx="8" fill="#fff" stroke="#ddd"/>
+  <text x="155" y="228" text-anchor="middle" font-size="12" fill="#333">DNS answers all pools →</text>
+  <text x="155" y="248" text-anchor="middle" font-size="12" fill="#333">client connects to a pool router</text>
+  <text x="155" y="268" text-anchor="middle" font-size="12" fill="#333">→ router picks a live worker</text>
+  <rect x="55" y="290" width="190" height="34" rx="6" fill="#eef4ef" stroke="#9cc7ab"/>
+  <text x="150" y="312" text-anchor="middle" font-size="12" font-weight="600" fill="#245a3a">served-by: lambda-w1</text>
+  <text x="155" y="352" text-anchor="middle" font-size="11.5" fill="#6b6b6b">normal streamed completion</text>
+  <rect x="20" y="720" width="270" height="150" rx="8" fill="#f0f7f2" stroke="#b3d4bf"/>
+  <text x="155" y="748" text-anchor="middle" font-size="12.5" font-weight="600" fill="#245a3a">"GPU HA Online"</text>
+  <text x="155" y="772" text-anchor="middle" font-size="11.5" fill="#4a4a4a">tokens stream normally,</text>
+  <text x="155" y="789" text-anchor="middle" font-size="11.5" fill="#4a4a4a">HTTP 200, real answer</text>
+
+  <!-- ===== DRILL 2 ===== -->
+  <rect x="308" y="100" width="270" height="70" rx="8" fill="#fdf0e6" stroke="#e0b98a"/>
+  <text x="443" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="#8a5a1a">2 · Intra-pool failover</text>
+  <text x="443" y="148" text-anchor="middle" font-size="11.5" fill="#4a4a4a">kill one Lambda GPU</text>
+  <text x="443" y="163" text-anchor="middle" font-size="11.5" fill="#4a4a4a">mid-stream (pre-token)</text>
+  <rect x="308" y="200" width="270" height="200" rx="8" fill="#fff" stroke="#ddd"/>
+  <text x="443" y="226" text-anchor="middle" font-size="12" fill="#333">router detects w1 silent</text>
+  <text x="443" y="246" text-anchor="middle" font-size="12" fill="#333">→ silently re-routes to</text>
+  <text x="443" y="266" text-anchor="middle" font-size="12" fill="#333">sibling GPU in same pool</text>
+  <rect x="345" y="288" width="196" height="34" rx="6" fill="#fdecc8" stroke="#e0b98a"/>
+  <text x="443" y="310" text-anchor="middle" font-size="12" font-weight="600" fill="#8a5a1a">served-by: lambda-w1 → w2</text>
+  <text x="443" y="350" text-anchor="middle" font-size="11.5" fill="#6b6b6b">same pool, different worker</text>
+  <rect x="308" y="720" width="270" height="150" rx="8" fill="#f0f7f2" stroke="#b3d4bf"/>
+  <text x="443" y="746" text-anchor="middle" font-size="12.5" font-weight="600" fill="#245a3a">continues uninterrupted</text>
+  <text x="443" y="770" text-anchor="middle" font-size="11.5" fill="#4a4a4a">client sees NO error;</text>
+  <text x="443" y="787" text-anchor="middle" font-size="11.5" fill="#4a4a4a">w2 takes the load</text>
+  <text x="443" y="810" text-anchor="middle" font-size="11" font-style="italic" fill="#6b6b6b">(pre-token = fully recoverable)</text>
+
+  <!-- ===== DRILL 3 ===== -->
+  <rect x="596" y="100" width="270" height="70" rx="8" fill="#fdf0e6" stroke="#e0b98a"/>
+  <text x="731" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="#8a5a1a">3 · Mid-stream fail-fast</text>
+  <text x="731" y="148" text-anchor="middle" font-size="11.5" fill="#4a4a4a">kill a GPU AFTER first</text>
+  <text x="731" y="163" text-anchor="middle" font-size="11.5" fill="#4a4a4a">token, mid-generation</text>
+  <rect x="596" y="200" width="270" height="200" rx="8" fill="#fff" stroke="#ddd"/>
+  <text x="731" y="226" text-anchor="middle" font-size="12" fill="#333">tokens already streamed came</text>
+  <text x="731" y="246" text-anchor="middle" font-size="12" fill="#333">from that worker's KV-cache —</text>
+  <text x="731" y="266" text-anchor="middle" font-size="12" fill="#333">no sibling shares it</text>
+  <rect x="631" y="288" width="200" height="52" rx="6" fill="#fbe4e4" stroke="#e0a3a3"/>
+  <text x="731" y="309" text-anchor="middle" font-size="12" font-weight="700" fill="#8a2b2b">clean truncation</text>
+  <text x="731" y="327" text-anchor="middle" font-size="11" fill="#8a2b2b">NOT a fake resume</text>
+  <text x="731" y="366" text-anchor="middle" font-size="11.5" fill="#6b6b6b">the honest half of the contract</text>
+  <rect x="596" y="720" width="270" height="150" rx="8" fill="#fbf1f1" stroke="#e0b3b3"/>
+  <text x="731" y="746" text-anchor="middle" font-size="12.5" font-weight="600" fill="#8a2b2b">stream stops cleanly</text>
+  <text x="731" y="770" text-anchor="middle" font-size="11.5" fill="#4a4a4a">partial output stays terminated;</text>
+  <text x="731" y="787" text-anchor="middle" font-size="11.5" fill="#4a4a4a">client retries whole request</text>
+  <text x="731" y="810" text-anchor="middle" font-size="11" font-style="italic" fill="#6b6b6b">(post-token = not recoverable)</text>
+
+  <!-- ===== DRILL 4 ===== -->
+  <rect x="884" y="100" width="270" height="70" rx="8" fill="#fdf0e6" stroke="#e0b98a"/>
+  <text x="1019" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="#8a5a1a">4 · Cross-cloud evacuation</text>
+  <text x="1019" y="148" text-anchor="middle" font-size="11.5" fill="#4a4a4a">kill the ENTIRE GCP pool</text>
+  <text x="1019" y="163" text-anchor="middle" font-size="11.5" fill="#4a4a4a">(all its workers)</text>
+  <rect x="884" y="200" width="270" height="200" rx="8" fill="#fff" stroke="#ddd"/>
+  <text x="1019" y="226" text-anchor="middle" font-size="12" fill="#333">GCP telemetry goes silent</text>
+  <text x="1019" y="246" text-anchor="middle" font-size="12" fill="#333">→ Tier-1 drops GCP from</text>
+  <text x="1019" y="266" text-anchor="middle" font-size="12" fill="#333">the DNS answer within ~10s</text>
+  <rect x="921" y="288" width="196" height="52" rx="6" fill="#eef4ef" stroke="#9cc7ab"/>
+  <text x="1019" y="309" text-anchor="middle" font-size="11.5" font-weight="600" fill="#245a3a">answer now = Lambda + RunPod</text>
+  <text x="1019" y="327" text-anchor="middle" font-size="11" fill="#4a4a4a">GCP removed, evacuated</text>
+  <text x="1019" y="366" text-anchor="middle" font-size="11.5" fill="#6b6b6b">DNS owns coarse pool eviction</text>
+  <rect x="884" y="720" width="270" height="150" rx="8" fill="#f0f7f2" stroke="#b3d4bf"/>
+  <text x="1019" y="746" text-anchor="middle" font-size="12.5" font-weight="600" fill="#245a3a">completions keep flowing</text>
+  <text x="1019" y="770" text-anchor="middle" font-size="11.5" fill="#4a4a4a">served by surviving pools;</text>
+  <text x="1019" y="787" text-anchor="middle" font-size="11.5" fill="#4a4a4a">GCP outage mitigated</text>
+
+  <!-- ===== DRILL 5 ===== -->
+  <rect x="1172" y="100" width="270" height="70" rx="8" fill="#fbe4e4" stroke="#e0a3a3"/>
+  <text x="1307" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="#8a2b2b">5 · Total outage (whale)</text>
+  <text x="1307" y="148" text-anchor="middle" font-size="11.5" fill="#4a4a4a">kill ALL pools</text>
+  <text x="1307" y="163" text-anchor="middle" font-size="11.5" fill="#4a4a4a">simultaneously</text>
+  <rect x="1172" y="200" width="270" height="200" rx="8" fill="#fff" stroke="#ddd"/>
+  <text x="1307" y="226" text-anchor="middle" font-size="12" fill="#333">no pool has fresh telemetry</text>
+  <text x="1307" y="246" text-anchor="middle" font-size="12" fill="#333">→ Tier-1 FAILSAFE fails over</text>
+  <text x="1307" y="266" text-anchor="middle" font-size="12" fill="#333">to the WHALE IP alone</text>
+  <rect x="1209" y="288" width="196" height="52" rx="6" fill="#eef4ef" stroke="#9cc7ab"/>
+  <text x="1307" y="309" text-anchor="middle" font-size="12" font-weight="700" fill="#245a3a">api.gpuha.com → whale</text>
+  <text x="1307" y="327" text-anchor="middle" font-size="11" fill="#4a4a4a">the last resort answers</text>
+  <text x="1307" y="366" text-anchor="middle" font-size="11.5" fill="#6b6b6b">graceful, not connection-refused</text>
+  <rect x="1172" y="720" width="270" height="150" rx="8" fill="#f0f7f2" stroke="#b3d4bf"/>
+  <text x="1307" y="744" text-anchor="middle" font-size="11.5" font-weight="600" fill="#245a3a">HTTP 200 · model: gpuha-degraded</text>
+  <text x="1307" y="766" text-anchor="middle" font-size="10.5" fill="#4a4a4a">"I'm having trouble reaching</text>
+  <text x="1307" y="781" text-anchor="middle" font-size="10.5" fill="#4a4a4a">compute… try again shortly."</text>
+  <text x="1307" y="804" text-anchor="middle" font-size="11" font-style="italic" fill="#6b6b6b">a polite answer, NOT an error</text>
+
+  <!-- arrows down each column -->
+  <g stroke="#bbb" stroke-width="1.6">
+    <line x1="155" y1="400" x2="155" y2="428" marker-end="url(#ad)"/><line x1="155" y1="680" x2="155" y2="712" marker-end="url(#ad)"/>
+    <line x1="443" y1="400" x2="443" y2="428" marker-end="url(#ad)"/><line x1="443" y1="680" x2="443" y2="712" marker-end="url(#ad)"/>
+    <line x1="731" y1="400" x2="731" y2="428" marker-end="url(#ad)"/><line x1="731" y1="680" x2="731" y2="712" marker-end="url(#ad)"/>
+    <line x1="1019" y1="400" x2="1019" y2="428" marker-end="url(#ad)"/><line x1="1019" y1="680" x2="1019" y2="712" marker-end="url(#ad)"/>
+    <line x1="1307" y1="400" x2="1307" y2="428" marker-end="url(#ad)"/><line x1="1307" y1="680" x2="1307" y2="712" marker-end="url(#ad)"/>
+  </g>
+  <defs><marker id="ad" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#bbb" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+</svg>

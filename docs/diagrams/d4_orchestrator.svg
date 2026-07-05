@@ -1,0 +1,106 @@
+<svg viewBox="0 0 1300 980" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="1300" height="980" fill="#fbfbfa"/>
+  <text x="650" y="38" text-anchor="middle" font-size="24" font-weight="700" fill="#1a1a1a">GPU HA — Orchestrator Lifecycle (gpuha up / down / reap)</text>
+  <text x="650" y="64" text-anchor="middle" font-size="14" fill="#6b6b6b">A custom Python CLI — NOT Kubernetes, NOT a container scheduler. Acquires GPU capacity across clouds, wires the fabric, tears it to $0.</text>
+
+  <!-- input -->
+  <rect x="60" y="100" width="240" height="80" rx="10" fill="#eef2f8" stroke="#c3d0e4"/>
+  <text x="180" y="128" text-anchor="middle" font-size="14" font-weight="700" fill="#2b3a55">topology.yaml</text>
+  <text x="180" y="150" text-anchor="middle" font-size="11" fill="#5a6b85">pools · workers-per-pool</text>
+  <text x="180" y="166" text-anchor="middle" font-size="11" fill="#5a6b85">min-pools quorum · prefs</text>
+
+  <!-- bring-up pipeline (left column) -->
+  <g>
+    <!-- PARSE -->
+    <rect x="440" y="100" width="420" height="66" rx="10" fill="#eef4ef" stroke="#9cc7ab"/>
+    <text x="650" y="127" text-anchor="middle" font-size="14" font-weight="700" fill="#245a3a">1 · PARSE + PERSIST</text>
+    <text x="650" y="149" text-anchor="middle" font-size="11.5" fill="#4a4a4a">write run-state JSON to disk BEFORE creating anything</text>
+    <line x1="300" y1="140" x2="436" y2="133" stroke="#5a6b85" stroke-width="2" marker-end="url(#o1)"/>
+    <line x1="650" y1="166" x2="650" y2="194" stroke="#5a6b85" stroke-width="2" marker-end="url(#o1)"/>
+
+    <!-- ACQUIRE -->
+    <rect x="440" y="196" width="420" height="86" rx="10" fill="#eef4ef" stroke="#9cc7ab"/>
+    <text x="650" y="222" text-anchor="middle" font-size="14" font-weight="700" fill="#245a3a">2 · ACQUIRE (concurrent — thread per pool)</text>
+    <text x="650" y="244" text-anchor="middle" font-size="11.5" fill="#4a4a4a">each provider adapter creates instances, tagged</text>
+    <text x="650" y="261" text-anchor="middle" font-size="11.5" font-weight="600" fill="#245a3a">gpuha-managed--&lt;run-id&gt;</text>
+    <text x="650" y="277" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6b6b6b">stockout = logged event, not failure; below quorum → abort AND tear down partial</text>
+    <line x1="650" y1="282" x2="650" y2="310" stroke="#5a6b85" stroke-width="2" marker-end="url(#o1)"/>
+
+    <!-- BOOTSTRAP -->
+    <rect x="440" y="312" width="420" height="66" rx="10" fill="#eef4ef" stroke="#9cc7ab"/>
+    <text x="650" y="338" text-anchor="middle" font-size="14" font-weight="700" fill="#245a3a">3 · BOOTSTRAP</text>
+    <text x="650" y="360" text-anchor="middle" font-size="11.5" fill="#4a4a4a">SSH → pinned vLLM stack → fetch code → launch vLLM + router + shim</text>
+    <line x1="650" y1="378" x2="650" y2="406" stroke="#5a6b85" stroke-width="2" marker-end="url(#o1)"/>
+
+    <!-- WIRE -->
+    <rect x="440" y="408" width="420" height="66" rx="10" fill="#eef4ef" stroke="#9cc7ab"/>
+    <text x="650" y="434" text-anchor="middle" font-size="14" font-weight="700" fill="#245a3a">4 · WIRE</text>
+    <text x="650" y="456" text-anchor="middle" font-size="11.5" fill="#4a4a4a">write pool→IP map → restart Tier-1 · scope plane firewall to each worker /32</text>
+    <line x1="650" y1="474" x2="650" y2="502" stroke="#5a6b85" stroke-width="2" marker-end="url(#o1)"/>
+
+    <!-- VERIFY -->
+    <rect x="440" y="504" width="420" height="72" rx="10" fill="#eef4ef" stroke="#9cc7ab"/>
+    <text x="650" y="530" text-anchor="middle" font-size="14" font-weight="700" fill="#245a3a">5 · VERIFY (poll)</text>
+    <text x="650" y="552" text-anchor="middle" font-size="11.5" fill="#4a4a4a">poll until warm AND a real streamed completion succeeds through the router —</text>
+    <text x="650" y="568" text-anchor="middle" font-size="11" font-style="italic" fill="#6b6b6b">not a health check: component health can pass while the pool silently can't serve</text>
+    <line x1="650" y1="576" x2="650" y2="604" stroke="#5a6b85" stroke-width="2" marker-end="url(#o1)"/>
+
+    <!-- UP -->
+    <rect x="440" y="606" width="420" height="56" rx="10" fill="#d7ead d" stroke="#7ab98a" fill-opacity="1"/>
+    <rect x="440" y="606" width="420" height="56" rx="10" fill="#cfe8d6" stroke="#7ab98a"/>
+    <text x="650" y="640" text-anchor="middle" font-size="15" font-weight="700" fill="#1e5a34">UP — fabric live (drills / demo / traffic)</text>
+  </g>
+
+  <!-- provider adapters (right top) -->
+  <rect x="900" y="196" width="340" height="180" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="1070" y="222" text-anchor="middle" font-size="13" font-weight="700" fill="#333">pluggable provider adapters</text>
+  <rect x="920" y="238" width="300" height="34" rx="6" fill="#f4f1ec" stroke="#d8cfc0"/><text x="1070" y="260" text-anchor="middle" font-size="12" fill="#5a4a2b">Lambda — TERMINATE only (no stop state)</text>
+  <rect x="920" y="278" width="300" height="34" rx="6" fill="#f4f1ec" stroke="#d8cfc0"/><text x="1070" y="300" text-anchor="middle" font-size="12" fill="#5a4a2b">RunPod — DELETE pods (NAT/port-mapped)</text>
+  <rect x="920" y="318" width="300" height="34" rx="6" fill="#f4f1ec" stroke="#d8cfc0"/><text x="1070" y="340" text-anchor="middle" font-size="12" fill="#5a4a2b">GCP — DELETE, zone-fallback</text>
+  <line x1="860" y1="239" x2="896" y2="250" stroke="#5a6b85" stroke-width="1.6" marker-end="url(#o1)" stroke-dasharray="4 3"/>
+
+  <!-- teardown branch (right, emphasized red) -->
+  <text x="1070" y="430" text-anchor="middle" font-size="15" font-weight="700" fill="#8a2b2b">TEARDOWN PATH — as important as bring-up</text>
+  <rect x="900" y="446" width="340" height="72" rx="10" fill="#f7ecec" stroke="#d98a8a"/>
+  <text x="1070" y="472" text-anchor="middle" font-size="14" font-weight="700" fill="#8a2b2b">DOWN</text>
+  <text x="1070" y="494" text-anchor="middle" font-size="11.5" fill="#6b2222">provider-correct destroy (terminate vs delete),</text>
+  <text x="1070" y="510" text-anchor="middle" font-size="11.5" fill="#6b2222">unwire pool map, verify gone</text>
+  <line x1="1070" y1="518" x2="1070" y2="542" stroke="#8a2b2b" stroke-width="2" marker-end="url(#o2)"/>
+
+  <rect x="900" y="544" width="340" height="88" rx="10" fill="#f7ecec" stroke="#d98a8a"/>
+  <text x="1070" y="570" text-anchor="middle" font-size="14" font-weight="700" fill="#8a2b2b">REAP --all</text>
+  <text x="1070" y="592" text-anchor="middle" font-size="11.5" fill="#6b2222">independently query EACH provider for anything</text>
+  <text x="1070" y="608" text-anchor="middle" font-size="11.5" fill="#6b2222">tagged gpuha-managed → destroy. Does NOT depend</text>
+  <text x="1070" y="624" text-anchor="middle" font-size="11" font-style="italic" fill="#6b2222">on run-state. Each provider in its own try/except.</text>
+  <line x1="1070" y1="632" x2="1070" y2="656" stroke="#8a2b2b" stroke-width="2" marker-end="url(#o2)"/>
+
+  <rect x="900" y="658" width="340" height="88" rx="10" fill="#f7ecec" stroke="#d98a8a"/>
+  <text x="1070" y="684" text-anchor="middle" font-size="14" font-weight="700" fill="#8a2b2b">DEADMAN</text>
+  <text x="1070" y="706" text-anchor="middle" font-size="11.5" fill="#6b2222">independent timer fires reap --all after N hours</text>
+  <text x="1070" y="722" text-anchor="middle" font-size="11.5" fill="#6b2222">REGARDLESS of orchestrator state — runs even if</text>
+  <text x="1070" y="738" text-anchor="middle" font-size="11.5" fill="#6b2222">the orchestrator itself crashes or hangs</text>
+
+  <!-- UP connects to DOWN -->
+  <line x1="860" y1="634" x2="896" y2="510" stroke="#8a2b2b" stroke-width="2" marker-end="url(#o2)"/>
+
+  <!-- governing principle -->
+  <rect x="60" y="800" width="1180" height="70" rx="12" fill="#f7ecec" stroke="#e0b3b3"/>
+  <text x="650" y="830" text-anchor="middle" font-size="15" font-weight="700" fill="#8a2b2b">TEARDOWN-FIRST DESIGN — an orchestrator that leaks a running GPU on a crash is worse than none.</text>
+  <text x="650" y="853" text-anchor="middle" font-size="13" fill="#6b2222">Every provider's failure mode is a billing trap. "The suspenders can't depend on the belt" — the safety path tolerates a broken system.</text>
+
+  <!-- callouts -->
+  <rect x="60" y="228" width="300" height="66" rx="8" fill="#eef2f8" stroke="#c3d0e4"/>
+  <text x="210" y="252" text-anchor="middle" font-size="11.5" fill="#3a4a65">state persisted before first create —</text>
+  <text x="210" y="269" text-anchor="middle" font-size="11.5" fill="#3a4a65">a crash mid-run still knows what exists,</text>
+  <text x="210" y="286" text-anchor="middle" font-size="11.5" fill="#3a4a65">so DOWN/REAP can clean it up</text>
+
+  <rect x="60" y="504" width="300" height="72" rx="8" fill="#eef2f8" stroke="#c3d0e4"/>
+  <text x="210" y="528" text-anchor="middle" font-size="11.5" fill="#3a4a65">cold-start is a first-class cost —</text>
+  <text x="210" y="545" text-anchor="middle" font-size="11.5" fill="#3a4a65">measured and budgeted per pool</text>
+  <text x="210" y="565" text-anchor="middle" font-size="11" font-style="italic" fill="#6b6b6b">(20-min cold pip = DR, not HA)</text>
+
+  <defs>
+    <marker id="o1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5a6b85" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="o2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#8a2b2b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+</svg>

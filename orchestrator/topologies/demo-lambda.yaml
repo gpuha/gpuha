@@ -1,0 +1,22 @@
+# Milestone 2 topology: ONE real Lambda A10 GPU pool (vLLM Qwen2.5-3B + router + shim).
+# gpu_1x_a10 is Lambda's cheapest single GPU (24GB, ~$1.29/hr); L4 is not offered.
+name: demo-lambda
+min_pools: 1
+plane:
+  host: 203.0.113.10
+  tier1_telem_port: 5106
+  tier1_dns_port: 5353
+  pool_map_file: /root/gpuha-runs/tier1-pools.map
+  tier1_service: gpuha-tier1
+  http_port: 8090
+  instance_type: gpu_1x_a10
+  verify_timeout: 900
+pools:
+  - name: gpuha-target-lambda
+    provider: lambda
+    role: gpu
+    machine_type: gpu_1x_a10
+    workers: 1
+    regions:
+      - us-east-1
+      - us-west-1

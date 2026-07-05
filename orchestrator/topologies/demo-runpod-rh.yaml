@@ -1,0 +1,23 @@
+# RP-P2: RunPod router-head (host-level) = TWO L4 pods, one logical pool.
+# A = router-head + w1 vLLM (localhost); B = w2 vLLM only, :8000 public via proxy
+# but --api-key protected (api-key IS the firewall). w2 liveness RELOCATED to A
+# (A scrapes B, emits frames to A's local router). Kill B's POD -> silence=death
+# evicts w2 -> A (different host) serves = host-level failover.
+name: demo-runpod-rh
+min_pools: 1
+plane:
+  host: 203.0.113.10
+  tier1_telem_port: 5106
+  tier1_dns_port: 5353
+  pool_map_file: /root/gpuha-runs/tier1-pools.map
+  tier1_service: gpuha-tier1
+  http_port: 8090
+  verify_timeout: 1800
+pools:
+  - name: gpuha-target-runpod-rh
+    provider: runpod
+    role: gpu
+    machine_type: NVIDIA_L4
+    workers: 2
+    warmup_budget: 1800
+    router_head: true

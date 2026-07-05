@@ -170,3 +170,16 @@ keep an eye out for the *Paracoding* books (https://a.co/d/0bdZMM8O), which tell
 
 *Apache-2.0. Use it, fork it, build on it. If you patent something and block me from using these patterns in
 my own work, that would be deeply annoying — which is exactly why this is published as prior art.*
+
+## 📖 The Book (free)
+
+This project's full story — how it was built by supervising AI agents,
+what broke, and what it proved — is a book: **PARACODING: Everything Is
+Still a DNS Problem**. It's free, right here in this repo:
+
+- [Read the PDF](book/PARACODING_EverythingIsStillADNSProblem_FREE.pdf)
+- [EPUB for your e-reader](book/PARACODING_EverythingIsStillADNSProblem_FREE.epub) — no DRM
+- If it earns it, an honest review on the Amazon listing is free and
+  hugely appreciated. (Paperback/hardcover/Kindle links land here within
+  days, once the listing is live. Book 1 of the series — *PARACODING:
+  Decoding Human History as Physics, Not Religion* — is on Amazon now.)

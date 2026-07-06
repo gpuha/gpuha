@@ -177,8 +177,8 @@ This project's full story — how it was built by supervising AI agents,
 what broke, and what it proved — is a book: **PARACODING: Everything Is
 Still a DNS Problem**. It's free, right here in this repo:
 
-- [Read the PDF](book/PARACODING_EverythingIsStillADNSProblem_FREE.pdf)
-- [EPUB for your e-reader](book/PARACODING_EverythingIsStillADNSProblem_FREE.epub) — no DRM
+- [Read the PDF](https://gpuha.com/book/PARACODING_EverythingIsStillADNSProblem_FREE.pdf)
+- [EPUB for your e-reader](https://gpuha.com/book/PARACODING_EverythingIsStillADNSProblem_FREE.epub) — no DRM
 - If it earns it, an honest review on the Amazon listing is free and
   hugely appreciated. (Paperback/hardcover/Kindle links land here within
   days, once the listing is live. Book 1 of the series — *PARACODING:
